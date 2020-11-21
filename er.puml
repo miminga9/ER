@@ -1,0 +1,68 @@
+@startuml 社員管理システム
+
+entity "クイズ実施結果\ncategory_result" as category_result {
+  ==
+  親カテゴリ名：category：
+  クライアントID：client_id：
+  ユーザID：user_id
+  総回答数：total：
+  総正解数：success：
+  親カテゴリ正解数：parent
+  親カテゴリNo.：parent_category
+  連続正解数設定：row
+  実施時間：time
+  登録日時：signup_at
+}
+
+entity "親カテゴリ情報\nparent_category" as parent_category {
+  + 番号：id [PK]
+  ==
+  カテゴリNo.：category
+  カテゴリ名：category_name
+  分類：grade
+  表示順：sort
+  ノルマ正解数：next
+  総時間：totalTime
+}
+
+entity "スタフリカテゴリ情報\nstudyfreak_category" as studyfreak_category {
+  カテゴリNo.：category
+  カテゴリ名：category_name
+  学年：grade
+  表示順：sort
+  ノルマ正解数：next
+  総時間：totalTime
+}
+
+entity "問題\nquestionbank" as questionbank {
+  + 番号：id [PK]
+  ==
+  問題番号.：No
+  問題：question
+  カテゴリNo.：category
+  正解値：answer1
+  誤り：aswer2
+  誤り：answer3
+  誤り：answer4
+  説明：description
+  予備：remark
+}
+
+entity "子カテゴリ\nchild_category" as child_category {
+  + 親カテゴリNo.：parent_category [PK]
+  + 子カテゴリNo.：child_category [PK]
+  ==
+  カテゴリ名：category_name
+  カテゴリNo.：category
+  表示順：sort
+}
+
+
+studyfreak_category ||--o{ child_category
+parent_category ||--o{ child_category
+child_category ||--|{ questionbank
+parent_category ||--|{ questionbank
+studyfreak_category ||--|{ questionbank
+parent_category ||--o{ category_result
+studyfreak_category ||--o{ category_result
+@enduml
